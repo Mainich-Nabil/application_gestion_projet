@@ -1,0 +1,174 @@
+<div class="container mt-4">
+  <h2>Gestion des Projets</h2>
+
+  <!-- Formulaire ajout/modification -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <h5 class="mb-0">
+        {{editProjectId ? 'Modifier Projet' : 'Ajouter Projet'}}
+      </h5>
+    </div>
+    <div class="card-body">
+      <form #projectForm="ngForm" (ngSubmit)="saveProject($event)">
+        <div class="mb-3">
+          <label for="projectName" class="form-label">Nom du projet *</label>
+          <input
+            id="projectName"
+            type="text"
+            class="form-control"
+            [(ngModel)]="newProject.name"
+            name="name"
+            required
+            placeholder="Entrez le nom du projet"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="projectDescription" class="form-label">Description</label>
+          <textarea
+            id="projectDescription"
+            class="form-control"
+            [(ngModel)]="newProject.description"
+            name="description"
+            rows="3"
+            placeholder="Description du projet (optionnel)"
+          ></textarea>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="startDate" class="form-label">Date de début *</label>
+            <input
+              id="startDate"
+              type="date"
+              class="form-control"
+              [(ngModel)]="newProject.startDate"
+              name="startDate"
+              required
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="endDate" class="form-label">Date de fin *</label>
+            <input
+              id="endDate"
+              type="date"
+              class="form-control"
+              [(ngModel)]="newProject.endDate"
+              name="endDate"
+              required
+              [min]="newProject.startDate"
+            />
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2">
+          <button
+            *ngIf="editProjectId"
+            type="button"
+            class="btn btn-secondary"
+            (click)="cancelEdit()"
+          >
+            <i class="bi bi-x-circle"></i> Annuler
+          </button>
+
+          <button
+            *ngIf="!editProjectId"
+            type="button"
+            class="btn btn-secondary"
+            (click)="startAdd()"
+          >
+            <i class="bi bi-arrow-clockwise"></i> Réinitialiser
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="projectForm.invalid"
+          >
+            <i
+              class="bi"
+              [class.bi-plus-circle]="!editProjectId"
+              [class.bi-check-circle]="editProjectId"
+            ></i>
+            {{editProjectId ? 'Modifier' : 'Ajouter'}}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Liste des projets -->
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">Liste des Projets ({{projects.length}})</h5>
+      <button
+        *ngIf="projects.length > 0"
+        class="btn btn-sm btn-outline-secondary"
+        (click)="loadProjects()"
+        title="Rafraîchir la liste"
+      >
+        <i class="bi bi-arrow-repeat"></i>
+      </button>
+    </div>
+
+    <div class="card-body p-0">
+      <div *ngIf="projects.length === 0" class="text-center p-4 text-muted">
+        <i class="bi bi-inbox display-4"></i>
+        <p class="mt-2">
+          Aucun projet trouvé. Ajoutez votre premier projet ci-dessus.
+        </p>
+      </div>
+
+      <div *ngIf="projects.length > 0">
+        <div class="list-group list-group-flush">
+          <div
+            *ngFor="let project of projects; trackBy: trackByProjectId"
+            class="list-group-item list-group-item-action"
+          >
+            <div class="d-flex justify-content-between align-items-start">
+              <div class="flex-grow-1">
+                <h6 class="mb-1 fw-bold">{{project.name}}</h6>
+                <p class="mb-1 text-muted" *ngIf="project.description">
+                  {{project.description}}
+                </p>
+                <small class="text-muted">
+                  <i class="bi bi-calendar-range"></i>
+                  {{formatDisplayDate(project.startDate)}} -
+                  {{formatDisplayDate(project.endDate)}}
+                </small>
+              </div>
+
+              <div class="btn-group ms-3" role="group">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-primary"
+                  (click)="Tasks(project.id)"
+                  title="Modifier le projet"
+                >
+                  <i class="bi bi-pencil">Tasks</i>
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-primary"
+                  (click)="startEdit(project)"
+                  title="Modifier le projet"
+                >
+                  <i class="bi bi-pencil">update</i>
+                </button>
+
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-danger"
+                  (click)="deleteProject(project.id)"
+                  title="Supprimer le projet"
+                >
+                  <i class="bi bi-trash">delete</i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
