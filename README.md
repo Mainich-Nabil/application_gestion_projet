@@ -44,7 +44,7 @@ management.demo/
 ### Installation
 1. Clone the repository:
 
-git clone https://github.com/Mainich_Nabil/gestion_projet
+git clone https://github.com/Mainich-Nabil/application_gestion_projet.git
 
 
 ## 🚀 Getting Started
@@ -58,4 +58,4 @@ git clone https://github.com/Mainich_Nabil/gestion_projet
 ### Installation
 1. Clone the repository:
 
-git clone https://github.com/Mainich_Nabil/gestion_projet
+git clone https://github.com/Mainich-Nabil/application_gestion_projet.git
